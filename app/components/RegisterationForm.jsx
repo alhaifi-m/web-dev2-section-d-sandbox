@@ -1,12 +1,59 @@
 "use client";
 import React from "react";
+import { useState } from "react";
 
 const RegisterationForm = () => {
-  const handleSubmit = () => {
-    console.log("Form Submitted ");
+  // State to manage form data
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    userName: "",
+    email: "",
+    password: "",
+  });
+
+    // State to manage success or error messages
+  const [message, setMessage] = useState("");
+
+    // Handles form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5500/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setMessage("User has been registered successfully");
+        // Reset form fields after successful submission
+        setFormData({
+          firstName: "",
+          lastName: "",
+          phoneNumber: "",
+          userName: "",
+          email: "",
+          password: "",
+        });
+      } else {
+        setMessage("User registration failed");
+      }
+    } catch (error) {
+      setMessage("User registration failed");
+    }
   };
-  const handleInputChange = () => {
-    console.log("Input");
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
   return (
     <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
@@ -24,7 +71,7 @@ const RegisterationForm = () => {
             id="firstName"
             name="firstName"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            value={""}
+            value={formData.firstName}
             onChange={handleInputChange}
             required
           />
@@ -41,7 +88,7 @@ const RegisterationForm = () => {
             id="lastName"
             name="lastName"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            value={""}
+            value={formData.lastName}
             onChange={handleInputChange}
             required
           />
@@ -58,12 +105,12 @@ const RegisterationForm = () => {
             id="phoneNumber"
             name="phoneNumber"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            value={""}
+            value={formData.phoneNumber}
             onChange={handleInputChange}
             required
           />
         </div>
-           <div className="mb-4">
+        <div className="mb-4">
           <label
             htmlFor="email"
             className="block text-sm font-medium text-gray-600"
@@ -75,7 +122,7 @@ const RegisterationForm = () => {
             id="email"
             name="email"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            value={""}
+            value={formData.email}
             onChange={handleInputChange}
             required
           />
@@ -90,14 +137,14 @@ const RegisterationForm = () => {
           <input
             type="password"
             id="password"
-            name="paswword"
+            name="password"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            value={""}
+            value={formData.password}
             onChange={handleInputChange}
             required
           />
         </div>
-     
+
         <div className="mb-4">
           <label
             htmlFor="userName"
@@ -110,12 +157,25 @@ const RegisterationForm = () => {
             id="userName"
             name="userName"
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            value={""}
+            value={formData.userName}
             onChange={handleInputChange}
             required
           />
         </div>
+        {/* Submit Button */}
+        <div className="mb-4">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white p-2 rounded-md w-full hover:bg-blue-600"
+          >
+            Register
+          </button>
+        </div>
       </form>
+            {/* Display success or error message */}
+      {message && (
+        <div className="mt-4 text-center text-red-400">{message}</div>
+      )}
     </div>
   );
 };
