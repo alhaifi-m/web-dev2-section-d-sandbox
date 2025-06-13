@@ -4,6 +4,7 @@ import Counter from "./components/Counter";
 import EmployeeList from "./components/EmployeeList";
 import GetData from "./components/GetData";
 import RegisterationForm from "./components/RegisterationForm";
+import UserProfile from "./components/ContextExamples/UserProfile";
 
 export default function Home() {
   return (
@@ -13,7 +14,12 @@ export default function Home() {
       {/* <Counter />
       <EmployeeList /> */}
       {/* <GetData /> */}
-      <RegisterationForm />
+      {/* <RegisterationForm /> */}
+      <UserProfile userId={6} />
+      {/* <UserProfile userId={2} /> */}
+      {/* <UserProfile userId={3} /> */}
+      {/* <UserProfile userId={4} /> */}
+      {/* <UserProfile userId={5} /> */}
     </main>
   );
 }
